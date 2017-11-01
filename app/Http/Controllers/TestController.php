@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Test;
+use App\Spec;
 
 class TestController extends Controller
 {
@@ -11,9 +13,11 @@ class TestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index() 
     {	
-		//return view('tests.all_tests', compact(''));
+		 $tests = Test::all();
+        
+        return view('tests.index', compact('tests'));
     }
 
     /**
@@ -23,7 +27,8 @@ class TestController extends Controller
      */
     public function create()
     {
-        //
+        $specs = Spec::all();
+         return view('tests.create' , compact( 'specs'));
     }
 
     /**
@@ -34,7 +39,17 @@ class TestController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $test = Test::create([
+                'test_name'      => $request['test_name'],                
+                
+                'spec_id'     => $request['spec_id'],
+                
+            ]);
+        
+       
+        
+            
+        return redirect()->route('get_all_test')->withSuccess('New test Successfully Created');
     }
 
     /**
@@ -56,7 +71,8 @@ class TestController extends Controller
      */
     public function edit($id)
     {
-        //
+        $test = Test::find($id)->first();
+       return view('tests.edit', compact('test'));
     }
 
     /**
@@ -68,7 +84,8 @@ class TestController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
+        
     }
 
     /**
@@ -79,6 +96,8 @@ class TestController extends Controller
      */
     public function destroy($id)
     {
-        //
+         $test = Test::find($id);
+        $test->delete();
+        return redirect()->route('get_all_test')->withSuccess('test deleted');
     }
 }

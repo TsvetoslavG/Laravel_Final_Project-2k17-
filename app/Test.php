@@ -9,4 +9,7 @@ class Test extends Model
     protected $fillable = [
         'test_name', 'spec_id',
     ];
+     public function Spec(){
+    	return $this->belongsTo('App/Spec');
+    }
 }
