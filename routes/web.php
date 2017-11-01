@@ -15,7 +15,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/tests', 'TestController@index');
+Route::resource('test' , 'TestController');
+
+Route::get('test/create', 'TestController@create')->name('add_new_test');
+
+Route::get('test/{$id}/edit', 'TestController@edit')->name('edit_test');
+
+Route::get('test/{id}/delete', 'TestController@destroy')->name('delete_test');
+
+Route::get('test', 'TestController@index')->name('get_all_test');
+
 
 Auth::routes();
 
