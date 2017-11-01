@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 Route::resource('test' , 'TestController');
@@ -24,7 +24,6 @@ Route::get('test/{$id}/edit', 'TestController@edit')->name('edit_test');
 Route::get('test/{id}/delete', 'TestController@destroy')->name('delete_test');
 
 Route::get('test', 'TestController@index')->name('get_all_test');
-
 
 Auth::routes();
 
