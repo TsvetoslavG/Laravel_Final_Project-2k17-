@@ -15,12 +15,18 @@ class TestController extends Controller
      */
     public function index() 
     {	
+<<<<<<< HEAD
 		//$test = Test::find(1)->first();
 		
 		//dd($test->spec->spec_name);
 		$tests = Test::all();
         
 		return view('tests.all', compact('tests'));
+=======
+		$tests = Test::all();
+        
+        return view('tests.index', compact('tests'));
+>>>>>>> origin/master
     }
 
     /**
@@ -30,9 +36,14 @@ class TestController extends Controller
      */
     public function create()
     {
+<<<<<<< HEAD
 		$specs = Spec::all();
 		
 		return view('tests.create' , compact('specs'));
+=======
+        $specs = Spec::all();
+         return view('tests.create' , compact( 'specs'));
+>>>>>>> origin/master
     }
 
     /**
@@ -43,12 +54,26 @@ class TestController extends Controller
      */
     public function store(Request $request)
     {
+<<<<<<< HEAD
 		Test::create([
 			'test_name'	=>	$request['test_name'],                
 			'spec_id'	=>	$request['spec_id'],
 		]);
 		
 		return redirect()->route('all_tests')->with('msg', 'You created new test ' . $request['test_name'] . ' successfully!');
+=======
+        $test = Test::create([
+                'test_name'      => $request['test_name'],                
+                
+                'spec_id'     => $request['spec_id'],
+                
+            ]);
+        
+       
+        
+            
+        return redirect()->route('get_all_test')->withSuccess('New test Successfully Created');
+>>>>>>> origin/master
     }
 
     /**
@@ -72,11 +97,16 @@ class TestController extends Controller
      */
     public function edit($id)
     {
+<<<<<<< HEAD
 		$test = Test::find($id)->first();
 		
 		$specs = Spec::all();
 		
 		return view('tests.edit', compact('test', 'specs'));
+=======
+        $test = Test::find($id)->first();
+       return view('tests.edit', compact('test'));
+>>>>>>> origin/master
     }
 
     /**
@@ -88,12 +118,17 @@ class TestController extends Controller
      */
     public function update(Request $request, $id)
     {
+<<<<<<< HEAD
 		Test::find($id)->update(array(
 			'test_name'	=> $request['test_name'],
 			'spec_id'	=> $request['spec_id'],
 		));
 		
 		return redirect()->route('all_tests')->with('msg', 'You updated ' . $request['test_name'] . ' test successfully!');
+=======
+        
+        
+>>>>>>> origin/master
     }
 
     /**
@@ -104,10 +139,16 @@ class TestController extends Controller
      */
     public function destroy($id)
     {
+<<<<<<< HEAD
 		$test = Test::find($id);
 		
 		$test->delete();
 		
 		return redirect()->route('all_tests')->with('msg', 'Test ' . $test['test_name'] . ' deleted successfully!');
+=======
+         $test = Test::find($id);
+        $test->delete();
+        return redirect()->route('get_all_test')->withSuccess('test deleted');
+>>>>>>> origin/master
     }
 }

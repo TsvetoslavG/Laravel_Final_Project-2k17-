@@ -12,9 +12,10 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
+<<<<<<< HEAD
 //Show Specs
 Route::get('/specs', 'SpecController@index')->name('all_specs');
 Route::get('/specs/{id}/show', 'SpecController@show')->name('show_spec');
@@ -47,3 +48,18 @@ Route::get('/user/{user_id}/enroll_spec/{spec_id}', 'UserActions@get_spec')->nam
 Route::get('/user/{user_id}/disenroll_spec/{spec_id}', 'UserActions@remove_spec')->name('remove_spec');
 
 Route::get('/user/{user_id}/test/{test_id}', 'UserActions@test')->name('show_test');
+=======
+Route::resource('test' , 'TestController');
+
+Route::get('test/create', 'TestController@create')->name('add_new_test');
+
+Route::get('test/{$id}/edit', 'TestController@edit')->name('edit_test');
+
+Route::get('test/{id}/delete', 'TestController@destroy')->name('delete_test');
+
+Route::get('test', 'TestController@index')->name('get_all_test');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+>>>>>>> origin/master
