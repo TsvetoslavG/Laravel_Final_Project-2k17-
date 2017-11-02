@@ -3,24 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Test;
+
 use App\Spec;
 
-class TestController extends Controller
+class SpecController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() 
-    {	
-		//$test = Test::find(1)->first();
+    public function index()
+    {
+		$specs = Spec::all();
 		
-		//dd($test->spec->spec_name);
-		$tests = Test::all();
-        
-		return view('tests.all', compact('tests'));
+        return view('specs.all', compact('specs'));
     }
 
     /**
@@ -30,9 +27,7 @@ class TestController extends Controller
      */
     public function create()
     {
-		$specs = Spec::all();
-		
-		return view('tests.create' , compact('specs'));
+        return view('specs.create');
     }
 
     /**
@@ -43,12 +38,14 @@ class TestController extends Controller
      */
     public function store(Request $request)
     {
-		Test::create([
-			'test_name'	=>	$request['test_name'],                
-			'spec_id'	=>	$request['spec_id'],
-		]);
+        Spec::create(array(
+			'spec_name'			=>	$request['spec_name'],
+			'spec_desc'			=>	$request['spec_desc'],
+			'spec_positions'	=>	$request['spec_positions'],
+			'positions_left'	=>	$request['spec_positions'],
+		));
 		
-		return redirect()->route('all_tests')->with('msg', 'You created new test ' . $request['test_name'] . ' successfully!');
+		return redirect()->route('all_specs')->with('msg', 'You create new spec ' . $request['spec_name'] . ' successfully!');
     }
 
     /**
@@ -59,9 +56,9 @@ class TestController extends Controller
      */
     public function show($id)
     {
-        $test = Test::find($id)->first();
+        $spec = Spec::where('id', $id)->first();
 		
-		return view('tests.show', compact('test'));
+		return view('specs.show', compact('spec'));
     }
 
     /**
@@ -72,11 +69,9 @@ class TestController extends Controller
      */
     public function edit($id)
     {
-		$test = Test::find($id)->first();
+        $spec = Spec::where('id', $id)->first();
 		
-		$specs = Spec::all();
-		
-		return view('tests.edit', compact('test', 'specs'));
+		return view('specs.edit', compact('spec'));
     }
 
     /**
@@ -88,12 +83,13 @@ class TestController extends Controller
      */
     public function update(Request $request, $id)
     {
-		Test::find($id)->update(array(
-			'test_name'	=> $request['test_name'],
-			'spec_id'	=> $request['spec_id'],
+        Spec::find($id)->update(array(
+			'spec_name'			=>	$request['spec_name'],
+			'spec_desc'			=>	$request['spec_desc'],
+			'spec_positions'	=>	$request['spec_positions'],
 		));
 		
-		return redirect()->route('all_tests')->with('msg', 'You updated ' . $request['test_name'] . ' test successfully!');
+		return redirect()->route('all_specs')->with('msg', 'You edited spec ' . $request['spec_name'] . ' successfully!');
     }
 
     /**
@@ -104,10 +100,10 @@ class TestController extends Controller
      */
     public function destroy($id)
     {
-		$test = Test::find($id);
+        $spec = Spec::find($id);
 		
-		$test->delete();
+		$spec->delete();
 		
-		return redirect()->route('all_tests')->with('msg', 'Test ' . $test['test_name'] . ' deleted successfully!');
+		return redirect()->route('all_specs')->with('msg', 'You deleted spec ' . $spec['spec_name'] . ' successfully!');
     }
 }
