@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Test;
 use App\User;
 use App\Spec;
+use App\TestUser;
 
 class UserActions extends Controller
 {
@@ -18,12 +19,50 @@ class UserActions extends Controller
 		$results = array();
 		
 		foreach($specs as $spec){
-			$test = Test::where('spec_id', $spec);
+			$spec = Spec::find($spec);
 			
-			$results[$test->test_name] = $test;
+			$tests = Test::where('spec_id', $spec->id)->get();
+			
+			$tests_arr = array();
+			
+			foreach($tests as $test){
+				$enrolled = TestUser::where('user_id', $user->id)->where('spec_id', $spec->id)->where('test_id', $test->id)->get();
+
+				if(!empty($enrolled[0])){
+					$tests_arr[] = ['test'=>$test, 'enrolled'=>true];
+				}else{
+					$tests_arr[] = ['test'=>$test, 'enrolled'=>false];
+				}
+			}
+			
+			$results[$spec->spec_name]=$tests_arr;
 		}
 		
-		return view('users.show_tests', compact('results'));
+		return view('users.show_tests', compact('results', 'user'));
+	}
+	
+	public function get_test($user_id, $test_id){
+		$user = User::find($user_id);
+		
+		$test = Test::find($test_id);
+		
+		TestUser::create(array(
+			'user_id'	=>	$user->id,
+			'test_id'	=>	$test->id,
+			'spec_id'	=>	$test->spec_id
+		));
+		
+		return redirect()->route('all_tests_user', $user->id)->with('msg', 'You sucessfully selected ' . $test->test_name);
+	}
+	
+	public function test($user_id, $test_id){
+		$user = User::find($user_id);
+		
+		$test = TestUser::where('user_id', $user_id)->where('test_id', $test_id)->first();
+		
+		$rating = TestUser::where('test_id', $test_id)->orderBy('final_result', 'desc')->get();
+		
+		return view('users.show_test', compact('user', 'test', 'rating'));
 	}
 	
 	public function specs($id){
@@ -58,6 +97,8 @@ class UserActions extends Controller
 	
 	public function remove_spec($user_id, $spec_id){
 		$user = User::find($user_id);
+		
+		TestUser::where('spec_id', $spec_id)->where('user_id', $user_id)->delete();
 		
 		$spec = Spec::find($spec_id);
 		

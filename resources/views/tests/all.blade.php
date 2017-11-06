@@ -16,6 +16,7 @@
 			<th>Test spec</th>
 			<th>Edit link</th>
 			<th>Delete link</th>
+			<th>Add results</th>
 		</tr>
 		@foreach($tests as $test)
 			<tr>
@@ -23,6 +24,7 @@
 				<td><a href="{{route('show_spec', $test['spec_id'])}}">{{$test->spec->spec_name}}</a></td>
 				<td><a href="{{route('edit_test', $test['id'])}}">Edit</a></td>
 				<td><a href="{{route('delete_test', $test['id'])}}">Delete</a></td>
+				<td><a href="{{route('add_test_results', $test['id'])}}">Add results</a></td>
 			</tr>
 		@endforeach
 	</table>

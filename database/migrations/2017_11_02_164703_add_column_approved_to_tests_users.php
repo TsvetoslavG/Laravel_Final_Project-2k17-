@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddSpecsColumnToUsers extends Migration
+class AddColumnApprovedToTestsUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddSpecsColumnToUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('user_specs', 255)->default('[]')->after('password');
+        Schema::table('tests_users', function (Blueprint $table) {
+            $table->double('final_result')->nullable()->after('result_2');
+			$table->boolean('approved')->default(false)->after('final_result');
         });
     }
 
@@ -25,7 +26,7 @@ class AddSpecsColumnToUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('tests_users', function (Blueprint $table) {
             //
         });
     }

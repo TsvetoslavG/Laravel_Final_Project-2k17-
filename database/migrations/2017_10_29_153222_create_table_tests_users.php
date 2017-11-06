@@ -18,8 +18,8 @@ class CreateTableTestsUsers extends Migration
 			$table->integer('user_id');
 			$table->integer('test_id');
 			$table->integer('spec_id');
-			$table->double('result_1');
-			$table->double('result_2');
+			$table->double('result_1')->nullable();
+			$table->double('result_2')->nullable();
             $table->timestamps();
         });
     }

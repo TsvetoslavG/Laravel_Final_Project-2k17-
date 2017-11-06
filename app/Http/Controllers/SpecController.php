@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Spec;
+use App\User;
+use App\Test;
+use App\TestUser;
 
 class SpecController extends Controller
 {
@@ -101,6 +104,24 @@ class SpecController extends Controller
     public function destroy($id)
     {
         $spec = Spec::find($id);
+		
+		Test::where('spec_id', $id)->delete();
+		
+		TestUser::where('spec_id', $id)->delete();
+		
+		$users = User::where('user_specs', 'like', '%"' . $id . '"%')->get();
+		
+		foreach($users as $user){
+			$specs = json_decode($user->user_specs);
+		
+			$ind = array_search($id, $specs);
+			
+			array_splice($specs, $ind, 1);
+			
+			$user->update(array(
+				'user_specs'	=> json_encode($specs),
+			));
+		}
 		
 		$spec->delete();
 		
